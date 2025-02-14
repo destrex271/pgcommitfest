@@ -17,6 +17,11 @@ class CommitFestFilterForm(forms.Form):
     author = forms.ChoiceField(required=False)
     reviewer = forms.ChoiceField(required=False)
     sortkey = forms.IntegerField(required=False)
+    sortorder = forms.ChoiceField(
+        choices=[('ASC', 'ASC'), ('DESC', 'DESC'), ('None', '')],
+        required= False,
+        widget=forms.HiddenInput()
+    )
 
     def __init__(self, cf, *args, **kwargs):
         super(CommitFestFilterForm, self).__init__(*args, **kwargs)

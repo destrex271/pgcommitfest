@@ -221,16 +221,40 @@ function flagCommitted(committer) {
 }
 
 
+var sortDirections = {};
 function sortpatches(sortby) {
-   if ($('#id_sortkey').val() == sortby) {
-      $('#id_sortkey').val(0);
-   } else {
-      $('#id_sortkey').val(sortby);
-   }
-   $('#filterform').submit();
+    console.log(sortDirections)
+    // Default to ASC if no previous sort direction exists for this column
+    if (typeof sortDirections[sortby] === 'undefined') {
+        sortDirections[sortby] = 'ASC';
+    }
 
-   return false;
+    // Toggle sorting direction between ASC, DESC, and None
+    if (sortDirections[sortby] === 'ASC') {
+        sortDirections[sortby] = 'DESC';
+    } else if (sortDirections[sortby] === 'DESC') {
+        sortDirections[sortby] = 'None';  // Reset to no sorting
+    } else {
+        sortDirections[sortby] = 'ASC';  // Default to ASC
+    }
+
+    // Update hidden fields in the form
+    document.getElementById('id_sortkey').value = sortby;
+    document.getElementById('id_sortorder').value = sortDirections[sortby];
+
+    // Submit the form with updated sorting parameters
+    document.getElementById('filterform').submit();
 }
+// function sortpatches(sortby) {
+//    if ($('#id_sortkey').val() == sortby) {
+//       $('#id_sortkey').val(0);
+//    } else {
+//       $('#id_sortkey').val(sortby);
+//    }
+//    $('#filterform').submit();
+
+//    return false;
+// }
 
 function toggleButtonCollapse(buttonId, collapseId) {
    $('#' + buttonId).button('toggle');

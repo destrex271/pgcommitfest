@@ -260,6 +260,12 @@ def commitfest(request, cfid):
         orderby_str = "topic, created"
         sortkey = 0
 
+    sortorder = request.GET.get('sortorder')
+    if sortorder == "DESC":
+        orderby_str = f"{orderby_str} DESC"
+    elif sortorder == "ASC":
+        orderby_str = f"{orderby_str} ASC"
+    
     if not has_filter and sortkey == 0 and request.GET:
         # Redirect to get rid of the ugly url
         return HttpResponseRedirect("/%s/" % cf.id)
@@ -333,6 +339,7 @@ ORDER BY is_open DESC, {1}""".format(where_str, orderby_str),
     # Generates a fairly expensive query, which we shouldn't do unless
     # the user is logged in. XXX: Figure out how to avoid doing that..
     form = CommitFestFilterForm(cf, request.GET)
+    
 
     return render(
         request,
