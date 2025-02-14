@@ -220,12 +220,18 @@ function flagCommitted(committer) {
    return false;
 }
 
-
 function sortpatches(sortby) {
    if ($('#id_sortkey').val() == sortby) {
-      $('#id_sortkey').val(0);
+      if($('#id_sortorder').val() == 1){
+        $('#id_sortkey').val(0);
+        $('#id_sortorder').val(0); // reset order 
+      }else if($('#id_sortorder').val() == -1){
+        $('#id_sortkey').val(sortby);
+        $('#id_sortorder').val(1); // ascending order -> oldest first 
+      }
    } else {
       $('#id_sortkey').val(sortby);
+      $('#id_sortorder').val(-1); // descending order -> latest first
    }
    $('#filterform').submit();
 

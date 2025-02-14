@@ -17,11 +17,13 @@ class CommitFestFilterForm(forms.Form):
     author = forms.ChoiceField(required=False)
     reviewer = forms.ChoiceField(required=False)
     sortkey = forms.IntegerField(required=False)
+    sortorder = forms.IntegerField(required=False) # 0 -> no order, 1 -> asc, -1 -> desc
 
     def __init__(self, cf, *args, **kwargs):
         super(CommitFestFilterForm, self).__init__(*args, **kwargs)
 
         self.fields["sortkey"].widget = forms.HiddenInput()
+        self.fields["sortorder"].widget = forms.HiddenInput()
 
         c = [(-1, "* All")] + list(PatchOnCommitFest._STATUS_CHOICES)
         self.fields["status"] = forms.ChoiceField(choices=c, required=False)

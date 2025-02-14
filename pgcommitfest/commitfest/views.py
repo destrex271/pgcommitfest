@@ -233,6 +233,7 @@ def commitfest(request, cfid):
     has_filter = len(whereclauses) > 0
 
     # Figure out custom ordering
+
     if request.GET.get("sortkey", "") != "":
         try:
             sortkey = int(request.GET["sortkey"])
@@ -259,6 +260,12 @@ def commitfest(request, cfid):
     else:
         orderby_str = "topic, created"
         sortkey = 0
+
+    sortorder = int(request.GET.get("sortorder", "0"))
+    if sortorder == 1:
+        orderby_str += " ASC"
+    elif sortorder == -1:
+        orderby_str += " DESC"
 
     if not has_filter and sortkey == 0 and request.GET:
         # Redirect to get rid of the ugly url
@@ -346,6 +353,7 @@ ORDER BY is_open DESC, {1}""".format(where_str, orderby_str),
             "title": cf.title,
             "grouping": sortkey == 0,
             "sortkey": sortkey,
+            "sortorder": sortorder,
             "openpatchids": [p["id"] for p in patches if p["is_open"]],
             "header_activity": "Activity log",
             "header_activity_link": "activity/",
